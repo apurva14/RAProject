@@ -1,0 +1,13 @@
+Debug
+.ec.ko.cmd
+ec.mod.c
+ec.mod.o
+.ec.mod.o.cmd
+ec.o
+.ec.o.cmd
+modules.order
+Module.symvers
+.project
+.settings
+.tmp_versions
+
