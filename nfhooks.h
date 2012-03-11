@@ -337,19 +337,19 @@ static unsigned int hook_local_out(unsigned int hooknum, struct sk_buff *skb,
 				//printk ("DEBUG:%d conid: %u Local Out: count = %d Before While Loop \n", jiffies, connection_id, connection->count);
 
 				connection->dup_my_skb = skb_copy(my_skb, GFP_KERNEL); // other option - GFP_ATOMIC
-<<<<<<< HEAD
+
 				//memcpy(connection->dup_iph,iph, sizeof(iphdr);
 				//memcpy(connection->dup_tcph, tcph, sizeof(tcphdr));
 
 //				connection->dup_my_skb = my_skb;
 
-=======
+
 
 
 //				connection->dup_iph = iph;
 //				connection->dup_my_skb = my_skb;
 //				connection->dup_tcph = tcph;
->>>>>>> b4758aaf1cc416cece8b165b7c7042cf199cf643
+
 //				while (connection->count < 2) {
 //					//Keep waiting for another packet to arrive
 //					printk ("DEBUG:%d conid: %u Local Out: count = %d waiting for packet to arrive \n", jiffies, connection_id, connection->count);
@@ -458,11 +458,10 @@ static unsigned int hook_local_out(unsigned int hooknum, struct sk_buff *skb,
 					//recalculate_window_size(connection);
 					//set_tcp_window_size(my_skb, tcph, iph,connection->psmt_window_size, connection->window_scale);
 					connection->dup_my_skb1 = skb_copy(my_skb, GFP_KERNEL); // other option - GFP_ATOMIC
-<<<<<<< HEAD
+
 					//memcpy(connection->dup_iph1, iph, sizeof(struct iphdr);
 					//memcpy(connection->dup_tcph1, tcph, sizeof(struct tcphdr));
-=======
->>>>>>> b4758aaf1cc416cece8b165b7c7042cf199cf643
+
 					set_tcp_window_size(my_skb,tcph,iph, 0,0); //choke ACK
 					connection->psmt_state = RECEIVE_PACKETS;
 
@@ -860,59 +859,19 @@ static inline void set_tcp_window_size(struct sk_buff* my_skb,
 }
 
 static inline int send_Duplicate_ACK(struct constate *connection) {
-//		skb = connection->dup_my_skb;
-<<<<<<< HEAD
-		struct tcphdr* tcph = NULL;
-		struct iphdr* iph = NULL;
-		u_int32_t conn_id;
-		if (connection->flag_dupack == 1) {
-			//iph = (struct iphdr *) connection->dup_my_skb->data;
-			//iph = ip_hdr(connection->dup_my_skb);
-			//Have commented the below line, if this line is uncommented, system hangs
-			//tcph = tcp_hdr(connection->dup_my_skb);
-			// TODO: The tcph header is still not correctly captured
-			//tcph = (struct tcphdr *) (connection->dup_my_skb->data + iph->ihl * 4);
-
-			//tcph = (struct tcphdr *) &(connection->dup_my_skb->data[iph->ihl * 4]);
-			//iph = connection->dup_iph;
-			//tcph = connection->dup_tcph;
-//			iph = ip_hdr(connection->dup_my_skb);
-//			if (!iph)
-//				printk ("DEBUG:%d ConId: %u Error \n", jiffies, conn_id);
-//
-//			tcph = tcp_hdr(connection->dup_my_skb);
-//			if (!tcph)
-//				printk ("DEBUG:%d ConId: %u Error tcph \n", jiffies, conn_id);
-//			conn_id = ntohs(tcph->dest);
-//			set_tcp_window_size(connection->dup_my_skb, tcph, iph,connection->psmt_window_size, connection->window_scale);
-//			printk ("DEBUG:%d ConId: %u send_duplicate_ack win_size = %d \n", jiffies, conn_id, connection->psmt_window_size);
-			return dst_output(connection->dup_my_skb);
-		}
-		else {
-//			iph = ip_hdr(connection->dup_my_skb1);
-//			if (!iph)
-//				printk ("DEBUG:%d ConId: %u Error1 \n", jiffies, conn_id);
-//			tcph = tcp_hdr(connection->dup_my_skb1);
-//			if (!tcph)
-//				printk ("DEBUG:%d ConId: %u Error tcph 1 \n", jiffies, conn_id);
-//			conn_id = ntohs(tcph->dest);
-//
-//			set_tcp_window_size(connection->dup_my_skb1, tcph, iph,connection->psmt_window_size, connection->window_scale);
-//			printk ("DEBUG:%d ConId: %u send_duplicate_ack1 win_size = %d \n", jiffies, conn_id, connection->psmt_window_size);
-=======
 		struct tcphdr* tcph;
 		struct iphdr* iph;
 		u_int32_t connection_id;
 
 		if (connection->flag_dupack == 1) {
-			iph = ip_hdr(connection->dup_my_skb);
+			//iph = ip_hdr(connection->dup_my_skb);
 			//Have commented the below line, if this line is uncommented, system hangs
 			//tcph = tcp_hdr(connection->dup_my_skb);
 			// TODO: The tcph header is still not correctly captured
-			tcph = (struct tcphdr *) (connection->dup_my_skb->data + iph->ihl * 4);
-			connection_id = ntohs(tcph->dest);
-			set_tcp_window_size(connection->dup_my_skb, tcph, iph,connection->psmt_window_size, connection->window_scale);
-			printk ("DEBUG:%d ConId: %u send_duplicate_ack win_size = %d \n", jiffies, connection_id, connection->psmt_window_size);
+			//tcph = (struct tcphdr *) (connection->dup_my_skb->data + iph->ihl * 4);
+			//connection_id = ntohs(tcph->dest);
+			//set_tcp_window_size(connection->dup_my_skb, tcph, iph,connection->psmt_window_size, connection->window_scale);
+			printk ("DEBUG:%d ConId: %u send_duplicate_ack win_size = %d \n", jiffies, connection->connection_id, connection->psmt_window_size);
 			return dst_output(connection->dup_my_skb);
 		}
 		else {
@@ -923,8 +882,8 @@ static inline int send_Duplicate_ACK(struct constate *connection) {
 //			tcph = (struct tcphdr *) (connection->dup_my_skb1->data + iph->ihl * 4);
 //			connection_id = ntohs(tcph->dest);
 //			set_tcp_window_size(connection->dup_my_skb1, tcph, iph,connection->psmt_window_size, connection->window_scale);
-			printk ("DEBUG:%d ConId: %u send_duplicate1_ack win_size = %d \n", jiffies, connection_id, connection->psmt_window_size);
->>>>>>> b4758aaf1cc416cece8b165b7c7042cf199cf643
+			printk ("DEBUG:%d ConId: %u send_duplicate1_ack win_size = %d \n", jiffies, connection->connection_id, connection->psmt_window_size);
+
 			return dst_output(connection->dup_my_skb1);
 		}
 }
@@ -934,18 +893,14 @@ static inline int send_Duplicate_ACK(struct constate *connection) {
  */
 
 /**
-<<<<<<< HEAD
+
  * hook_local_outget tcphdr
-=======
+
  * hook_local_out
->>>>>>> b4758aaf1cc416cece8b165b7c7042cf199cf643
+
  *
  * Deals with with outgoing traffic from local processes.
  */
-//static struct nf_hook_ops hook_local_out_ops __read_mostly =
-//{ .pf = PF_INET, .priority = 1, .hooknum = NF_INET_POST_ROUTING,//NF_INET_LOCAL_OUT,
-//		.hook = hook_local_out, };
-
 static struct nf_hook_ops hook_local_out_ops __read_mostly =
 { .pf = PF_INET, .priority = 1, .hooknum = NF_INET_LOCAL_OUT,
 		.hook = hook_local_out, };
